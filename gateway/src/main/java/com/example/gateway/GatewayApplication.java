@@ -28,4 +28,10 @@ public class GatewayApplication {
 	public SimplePreFilter simplePreFilter(){
 		return new SimplePreFilter();
 	}
+
+	@Bean
+	public AddContextPreFilter addContextPreFilter(){
+		return new AddContextPreFilter();
+	}
+
 }

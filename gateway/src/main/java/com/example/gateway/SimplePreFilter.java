@@ -4,8 +4,10 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Enumeration;
 
 public class SimplePreFilter extends ZuulFilter {
 
@@ -13,12 +15,12 @@ public class SimplePreFilter extends ZuulFilter {
 
 	@Override
 	public String filterType() {
-		return "pre"; //pre, route, post, error
+		return FilterConstants.PRE_TYPE;
 	}
 
 	@Override
 	public int filterOrder() {
-		return 1;
+		return FilterConstants.SEND_RESPONSE_FILTER_ORDER;
 	}
 
 	@Override
@@ -29,9 +31,9 @@ public class SimplePreFilter extends ZuulFilter {
 	@Override
 	public Object run() {
 		RequestContext ctx = RequestContext.getCurrentContext();
-		HttpServletRequest request = ctx.getRequest();
-
-		log.info(String.format("%s request to %s", request.getMethod(), request.getRequestURL().toString()));
-
-		return null;	}
+		for (String key : ctx.keySet()) {
+			log.info(String.format("Context value for %s:=[%s]", key, ctx.get(key)));
+		}
+		return null;
+	}
 }
