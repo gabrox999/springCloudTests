@@ -1,0 +1,19 @@
+spring:
+    application:
+        name: registry
+
+server:
+    port: 8761
+    contextPath: /registry
+
+# By default, the registry will also attempt to register itself, so you’ll need to disable that, as well.
+eureka:
+    client:
+        register-with-eureka: false
+        fetch-registry: false
+
+#s.b.a.e.m.MvcEndpointSecurityInterceptor : Full authentication is required to access actuator endpoints. Consider adding Spring Security
+#or set 'management.security.enabled' to false.
+management:
+    security:
+        enabled: false

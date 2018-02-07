@@ -1,0 +1,9 @@
+# you’ll soon see the eureka-client registered under whatever name you specify
+# in the spring.application.name property. This property is used a lot in
+# Spring Cloud, often in the earliest phases of a service’s configuration.
+# This property is used in service bootstrap and so by convention lives
+# in eureka-client/src/main/resources/bootstrap.properties where it’s
+# found before src/main/resources/application.properties.
+spring:
+    application:
+        name: gateway

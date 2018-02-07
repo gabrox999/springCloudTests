@@ -4,6 +4,9 @@ import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.cloud.netflix.zuul.filters.support.FilterConstants;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -11,11 +14,15 @@ import javax.servlet.http.HttpServletRequest;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class AddContextPreFilter extends ZuulFilter {
 
 	private static Logger log = LoggerFactory.getLogger(AddContextPreFilter.class);
+
+	@Autowired
+	private DiscoveryClient discoveryClient;
 
 	@Override
 	public String filterType() {
@@ -46,11 +53,12 @@ public class AddContextPreFilter extends ZuulFilter {
 		RequestContext ctx = RequestContext.getCurrentContext();
 		String contextURI = (String) ctx.get("requestURI");
 		String proxy = (String) ctx.get("proxy");
-		if (contextURI != null) {
-			if (rewriteRules.containsKey(proxy)) {
-				log.debug("Rewriting url for " + proxy);
-				ctx.put("requestURI", rewriteRules.get(proxy) + contextURI);
-			}
+
+		List<ServiceInstance> res = this.discoveryClient.getInstances(proxy);
+		String contextPath = res.get(0).getMetadata().get("contextPath");
+		if (contextPath != null) {
+			ctx.put("requestURI", contextPath + contextURI);
+			log.debug("Rewriting url for " + proxy);
 		}
 		HttpServletRequest request = ctx.getRequest();
 		log.info(String.format("Modified: %s request to %s", request.getMethod(), request.getRequestURL().toString()));

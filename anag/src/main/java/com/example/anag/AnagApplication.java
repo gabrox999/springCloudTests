@@ -2,8 +2,11 @@ package com.example.anag;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
 
 @SpringBootApplication
 @RestController
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
  * methods in this class will be automatically converted
  * appropriately and written directly to the HTTP response.
  */
+@EnableEurekaClient
 public class AnagApplication {
 
 	public static void main(String[] args) {
@@ -21,11 +25,11 @@ public class AnagApplication {
 
 	@RequestMapping("/available")
 	public String available(){
-		return "it's work!";
+		return "it's work! " + new Date();
 	}
 
 	@RequestMapping("/checked-out")
 	public String checkedOut(){
-		return "OOOKKK!";
+		return "OOOKKK! " + new Date();
 	}
 }

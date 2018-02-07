@@ -1,9 +1,18 @@
 package com.example.gateway;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cloud.client.ServiceInstance;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @SpringBootApplication
 @EnableZuulProxy
@@ -18,6 +27,14 @@ import org.springframework.context.annotation.Bean;
  * the services to which to forward requests to those routes.
  * We specify routes using application.yml
  */
+@EnableDiscoveryClient
+/*
+ * stand up a client that both registers itself with the
+ * registry and uses the Spring Cloud DiscoveryClient abstraction
+ * to interrogate the registry for it’s own host and port.
+ * The @EnableDiscoveryClient activates the Netflix Eureka DiscoveryClient implementation.
+ */
+@RestController
 public class GatewayApplication {
 
 	public static void main(String[] args) {
@@ -32,6 +49,15 @@ public class GatewayApplication {
 	@Bean
 	public AddContextPreFilter addContextPreFilter(){
 		return new AddContextPreFilter();
+	}
+
+	@Autowired
+	private DiscoveryClient discoveryClient;
+
+	@RequestMapping("/service-instances/{applicationName}")
+	public List<ServiceInstance> serviceInstancesByApplicationName(
+			@PathVariable String applicationName) {
+		return this.discoveryClient.getInstances(applicationName);
 	}
 
 }
