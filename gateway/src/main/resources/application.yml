@@ -1,0 +1,21 @@
+spring:
+    application:
+        name: gateway
+
+server:
+    port: 9080
+
+# We specify routes using properties under zuul.routes.
+# Each of our microservices can have an entry under zuul.routes.NAME,
+# where NAME is the application name (as stored in the
+# spring.application.name property).
+zuul:
+    routes:
+        anag:
+            url: http://localhost:9081
+
+#s.b.a.e.m.MvcEndpointSecurityInterceptor : Full authentication is required to access actuator endpoints. Consider adding Spring Security
+#or set 'management.security.enabled' to false.
+management:
+    security:
+        enabled: false

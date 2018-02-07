@@ -1,0 +1,6 @@
+spring:
+    application:
+        name: anag
+
+server:
+    port: 9081
