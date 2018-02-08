@@ -6,9 +6,9 @@
 	<groupId>com.example</groupId>
 	<artifactId>anag</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 
-	<name>demo</name>
+	<name>anag</name>
 	<description>Demo project for Spring Boot</description>
 
 	<parent>
