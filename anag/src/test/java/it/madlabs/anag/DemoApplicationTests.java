@@ -1,4 +1,4 @@
-package com.example.anag;
+package it.madlabs.anag;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

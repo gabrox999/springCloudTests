@@ -1,4 +1,4 @@
-package com.example.gateway;
+package it.madlabs.registry;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

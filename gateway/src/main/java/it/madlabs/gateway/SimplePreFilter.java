@@ -1,4 +1,4 @@
-package com.example.gateway;
+package it.madlabs.gateway;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
